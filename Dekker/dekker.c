@@ -1,6 +1,8 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sched.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -43,6 +45,13 @@ threads[thread_id] = 0;
 
 int main(int argc, char **argv)
 {
+cpu_set_t cpu0, cpu1;
+CPU_ZERO(&cpu0);
+CPU_ZERO(&cpu1);
+CPU_SET(0, &cpu0);
+CPU_SET(1, &cpu1);
+
+
 
 	pthread_t threads[2];
 	int threads_args[] = {0,1};
@@ -51,7 +60,12 @@ int main(int argc, char **argv)
 	{
 		int x=pthread_create(&threads[i], NULL, Dekker,(void*)&threads_args[i]);
 		if (x!=0) puts ("Error");
+
 	}
+		if(pthread_setaffinity_np(threads[0],sizeof(cpu_set_t), &cpu0))
+		puts("Err");
+		if(pthread_setaffinity_np(threads[1],sizeof(cpu_set_t), &cpu1))
+		puts("Err");
 //while(1);	
 i=0;
 	for (i; i < 2; i++)
