@@ -8,8 +8,8 @@
 
 int counter = 0;
 
-volatile int turn = 0;
-int threads[2];
+static volatile int turn = 0;
+static volatile int threads[2];
 
 void inline mfence(void)
 {
@@ -38,6 +38,7 @@ mfence();
 	++counter;
 
 turn = 1-thread_id;
+mfence();
 threads[thread_id] = 0;
 }
 //	printf("thread- %d counter-%d\n",thread_id,counter);

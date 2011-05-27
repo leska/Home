@@ -1,0 +1,5 @@
+$ gcc -D_GNU_SOURCE -lpthread de.c -o dk && time ./dk
+20000000
+real    0m16.851s
+user    0m12.148s
+sys     0m0.022s
